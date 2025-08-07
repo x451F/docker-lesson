@@ -1,0 +1,35 @@
+services:
+  # Création du service BDD
+  mariadb:
+    # Nom de l'image créée à partir du Dockerfile
+    image: mariadb:lts-ubi9
+    # Le nom du conteneur instancié
+    container_name: maria-db
+    restart: 'always'
+    # Montage de volumes divers
+    volumes:
+      # volume permettant d'initialiser la BDD au lancement du conteneur
+      - ${MARIADB_DUMP_DIR}:/docker-entrypoint-initdb.d 
+    environment:
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
+      MARIADB_DATABASE: ${MARIADB_DB_NAME}
+    ports:
+      - "9806:3306"
+
+       # 2nd conteneur : phpMyAdmin
+  # Plus d'information sur l'image utilisée : https://hub.docker.com/_/phpmyadmin
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:5.2.2
+    restart: always
+    environment:
+      # Adresse de l'hôte hébergeant la base de données
+      # Attention : ici il s'agit du NOM DU CONTENEUR (nous ne connaissons pas l'adresse IP)
+      PMA_HOST: maria-db
+      # Port du serveur de base de données
+      PMA_PORT: 3306
+    # Redirection des ports pour pouvoir accéder au conteneur depuis la machine hôte
+    ports:
+      - 8080:80
+    # Dépendance du service phpmyadmin
+    depends_on:
+      - mariadb
