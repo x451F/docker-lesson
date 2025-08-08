@@ -14,7 +14,10 @@ docker image ls | grep my-mariadb
 
 ## 2) Lancer un conteneur (avec mappage de port)
 ```bash
-docker run --name mariadb-ex --rm -p 127.0.0.1:9806:3306/tcp my-mariadb:exercise
+docker run --name mariadb-ex --rm \
+  -p 127.0.0.1:9806:3306 \
+  -e MARIADB_ROOT_PASSWORD='ultrasupersecuredpassword' \
+  my-mariadb:exercise
 ```
 
 > Connexion : `host=localhost`, `port=9806`, `user=root`, `password=ultrasupersecuredpassword`.

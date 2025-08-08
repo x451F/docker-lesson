@@ -1,0 +1,23 @@
+services:
+  mariadb:
+    image: mariadb:lts-ubi9
+    container_name: maria-db
+    restart: always
+    environment:
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
+      MARIADB_DATABASE: ${MARIADB_DB_NAME}
+    volumes:
+      - ${MARIADB_DUMP_DIR}:/docker-entrypoint-initdb.d
+    ports:
+      - "9806:3306"
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:5.2.2
+    restart: always
+    environment:
+      PMA_HOST: maria-db
+      PMA_PORT: 3306
+    ports:
+      - "9080:80"
+    depends_on:
+      - mariadb
