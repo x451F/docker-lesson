@@ -34,7 +34,7 @@ Cela démarre :
 - URL : http://localhost:9080
 - Serveur : `maria-db` (c’est le **nom du conteneur**, pas une IP)
 - Utilisateur : `root`
-- Mot de passe : valeur de `MARIADB_ROOT_PASSWORD` (voir `.env`)
+- Mot de passe : valeur de `MARIADB_ROOT_PASSWORD` (voir `.env`(```supersecuredpassword```))
 
 ## 4) Notes sur les volumes / init
 Les scripts SQL placés dans `db/dump/` sont exécutés **au premier démarrage** du conteneur MariaDB (ordre alphanumérique).  
